@@ -49,7 +49,7 @@ const AuthForm = ({ type }: { type: string }) => {
         const userData = {
           firstName: data.firstName!,
           lastName: data.lastName!,
-          address: data.address!,
+          address1: data.address1!,
           city: data.city!,
           state: data.state!,
           postalCode: data.postalCode!,
@@ -133,9 +133,9 @@ const AuthForm = ({ type }: { type: string }) => {
 
                   <CustomInput
                     control={form.control}
-                    name="address"
-                    label="Address"
-                    placeholder="Enter your specific address"
+                    name="address1"
+                    label="address1"
+                    placeholder="Enter your specific address1"
                   />
                   <CustomInput
                     control={form.control}
