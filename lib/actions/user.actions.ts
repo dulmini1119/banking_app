@@ -28,13 +28,13 @@ export const signIn = async ({email, password} : signInProps) => {
   }
 }
 
-export const signUp = async (userData : SignUpParams) => {
-  const {email, password, firstName, lastName} = userData;
-
+export const signUp = async ({ password, ...userData }: SignUpParams) => {
+  const { email, firstName, lastName } = userData;
+  
   let newUserAccount;
 
   try {
-    const {account, database} = await createAdminClient();
+    const { account, database } = await createAdminClient();
 
     newUserAccount = await account.create(
       ID.unique(), 
@@ -52,8 +52,8 @@ export const signUp = async (userData : SignUpParams) => {
 
     if(!dwollaCustomerUrl) throw new Error('Error creating Dwolla customer')
 
-    const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl)
-    
+    const dwollaCustomerId = extractCustomerIdFromUrl(dwollaCustomerUrl);
+
     const newUser = await database.createDocument(
       DATABASE_ID!,
       USER_COLLECTION_ID!,
@@ -70,15 +70,14 @@ export const signUp = async (userData : SignUpParams) => {
 
     cookies().set("appwrite-session", session.secret, {
       path: "/",
-      httpOnly:true,
-      sameSite:'strict',
-      secure:true,
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
     });
 
     return parseStringify(newUser);
-
   } catch (error) {
-    console.log('Error', error);
+    console.error('Error', error);
   }
 }
 
@@ -112,7 +111,7 @@ export const createLinkToken = async( user: User) =>{
       user:{
         client_user_id: user.$id
       },
-      client_name:user.name,
+      client_name:`${user.firstName} ${user.lastName}`,
       products: ['auth'] as Products[],
       language:'en',
       country_codes: ['US'] as CountryCode[],
